@@ -659,9 +659,11 @@ button[type="submit"] {
 .container {
   border: 0.5px solid #8b99ac; 
   border-radius: 10px; 
-  padding: 40px; 
+  padding: 30px; 
   max-width: 400px; 
-  margin: 0 auto;
+  margin: 10 auto;
+
+  
 }
 
 .texto2{
@@ -671,4 +673,51 @@ button[type="submit"] {
 
 .mt-2{
   margin-top: 10px;
+}
+
+
+.dark-mode {
+  background-color: #333; 
+  color: #fff; 
+ 
+}
+
+.dark-mode-toggle {
+  background-color: #1E90FF;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+.dark-mode .dark-mode-toggle {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode-toggle:hover {
+  background-color: #90959e;
+}
+
+
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode input, .dark-mode button {
+  background-color: #121212;
+  color: #ffffff;
+  border-color: #96a3af;
+}
+
+
+.dark-mode-toggle {
+  position: fixed; 
+  top: 10px; 
+  right: 10px; 
+  z-index: 999; 
 }
