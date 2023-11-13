@@ -22,8 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $stmt->execute();
 
     if ($result) {
-        echo "Registro exitoso!";
-        header("Location: code/index.php");
+        header("Location: personal_info.php"); 
         exit();
     } else {
         echo "Error en el registro: " . $stmt->error;
@@ -32,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class=" account mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form class="space-y-6" action="#" method="POST">
                     <div>
-                        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email:</label>
+                        <label for="email" class="block text-sm font-medium leading-6 text-gray-900"></label>
                         <div class="mt-2">
                             <input id="email" name="email" type="email" placeholder="Email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         </div>
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div>
                         <div class="flex items-center justify-between">
-                            <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Contraseña:</label>
+                            <label for="password" class="block text-sm font-medium leading-6 text-gray-900"></label>
                         </div>
                         <div class="mt-2">
                             <input id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h4 class="social social-center">Adready a member? <a class="register" href="/code/index.php">Login</a></h4>
 
                     </div>
-                    <button id="darkModeToggle" class="dark-mode-toggle">Toggle Dark Mode</button>
+                    <button id="darkModeToggle" class="dark-mode-toggle">Dark Mode</button>
 
                 </div>
             </div>
