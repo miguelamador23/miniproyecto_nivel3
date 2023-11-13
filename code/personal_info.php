@@ -30,6 +30,7 @@ if ($result) {
 $stmt->close();
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -129,20 +130,20 @@ $stmt->close();
         .dark-mode .text-gray-500,
         .dark-mode .text-gray-700 {
             color: #fff;
-           
+
         }
 
         .dark-mode .titulo1,
         .dark-mode .titulo2 {
             color: #fff;
-            
+
         }
 
         .dark-mode input,
         .dark-mode button,
         .dark-mode textarea {
             color: #fff;
-           
+
         }
 
         .container {
@@ -280,3 +281,31 @@ $stmt->close();
 </body>
 
 </html>
+
+<?php
+if ($newEmail === '') {
+    $newEmail = null;
+}
+
+
+$sqlUpdate = "UPDATE usuarios SET name=?, bio=?, email=?, password=?, phone=? WHERE id=?";
+$stmtUpdate = $mysqli->prepare($sqlUpdate);
+
+if (!$stmtUpdate) {
+    echo "Error en la preparación de la consulta: " . $mysqli->error;
+    exit();
+}
+
+$stmtUpdate->bind_param("sssssi", $newName, $newBio, $newEmail, $newPassword, $newPhone, $userId);
+
+$resultUpdate = $stmtUpdate->execute();
+
+if ($resultUpdate) {
+    header("Location: personal_info.php");
+    exit();
+} else {
+    echo "Error al actualizar la información: " . $stmtUpdate->error;
+}
+
+$stmtUpdate->close();
+?>

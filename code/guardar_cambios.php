@@ -1,7 +1,7 @@
 <?php
 require_once('../config/database.php');
-
 session_start();
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: /code/index.php");
     exit();
@@ -13,29 +13,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newName = $_POST['new_name'];
     $newBio = $_POST['new_bio'];
     $newEmail = $_POST['new_email'];
-    
-   
     $newPassword = isset($_POST['edit_mode']) ? $_POST['new_password'] : $_POST['current_password'];
-    
     $newPhone = $_POST['new_phone'];
 
-    $sql = "UPDATE usuarios SET name=?, bio=?, email=?, password=?, phone=? WHERE id=?";
-    $stmt = $mysqli->prepare($sql);
+    // Asegúrate de que $newEmail tenga un valor antes de la preparación de la consulta
+    if ($newEmail === '') {
+        $newEmail = null;
+    }
 
-    if (!$stmt) {
+    // Preparación de la consulta
+    $sqlUpdate = "UPDATE usuarios SET name=?, bio=?, email=?, password=?, phone=? WHERE id=?";
+    $stmtUpdate = $mysqli->prepare($sqlUpdate);
+
+    if (!$stmtUpdate) {
         echo "Error en la preparación de la consulta: " . $mysqli->error;
         exit();
     }
 
-    $stmt->bind_param("sssssi", $newName, $newBio, $newEmail, $newPassword, $newPhone, $userId);
-    $result = $stmt->execute();
+    $stmtUpdate->bind_param("sssssi", $newName, $newBio, $newEmail, $newPassword, $newPhone, $userId);
 
-    if ($result) {
+    // Ejecución de la consulta
+    $resultUpdate = $stmtUpdate->execute();
+
+    if ($resultUpdate) {
         header("Location: personal_info.php");
         exit();
     } else {
-        echo "Error al actualizar la información: " . $stmt->error;
+        echo "Error al actualizar la información: " . $stmtUpdate->error;
     }
 
-    $stmt->close();
+    $stmtUpdate->close();
 }
+?>
