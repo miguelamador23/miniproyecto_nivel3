@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h4 class="social social-center">Don't have an account yet? <a class="register" href="/code/register.php">Register</a></h4>
 
                     </div>
-                    <button id="darkModeToggle" class="dark-mode-toggle">Toggle Dark Mode</button>
+                    <button id="darkModeToggle" class="dark-mode-toggle">Dark Mode</button>
 
                 </div>
             </div>
