@@ -1,3 +1,39 @@
+<?php
+require_once('../config/database.php');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    if (empty($password)) {
+        echo "Error: La contraseña no puede estar vacía.";
+        exit();
+    }
+
+    $sql = "INSERT INTO usuarios (email, password, Name) VALUES (?, ?, ?)";
+    $stmt = $mysqli->prepare($sql);
+
+    if (!$stmt) {
+        echo "Error en la preparación de la consulta: " . $mysqli->error;
+        exit();
+    }
+
+    $stmt->bind_param("sss", $email, $password, $name);
+    $result = $stmt->execute();
+
+    if ($result) {
+        echo "Registro exitoso!";
+        header("Location: code/index.php");
+        exit();
+    } else {
+        echo "Error en el registro: " . $stmt->error;
+    }
+
+    $stmt->close();
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +63,7 @@
             <div class=" account mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form class="space-y-6" action="#" method="POST">
                     <div>
-                        <label for="email" class="block text-sm font-medium leading-6 text-gray-900"></label>
+                        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email:</label>
                         <div class="mt-2">
                             <input id="email" name="email" type="email" placeholder="Email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         </div>
@@ -35,20 +71,18 @@
 
                     <div>
                         <div class="flex items-center justify-between">
-                            <label for="password" class="block text-sm font-medium leading-6 text-gray-900"></label>
+                            <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Contraseña:</label>
                         </div>
                         <div class="mt-2">
-                            <input id="password" name "password" type="password" placeholder="Password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <input id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         </div>
                     </div>
 
                     <div>
-                        <a href="/code/personal_info.php" class="flex w-full justify-center">
-                            <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                Start coding now</button>
-                        </a>
+                        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            Registrarse
+                        </button>
                     </div>
-
                 </form>
 
                 <div>
