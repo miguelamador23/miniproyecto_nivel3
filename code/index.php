@@ -1,20 +1,36 @@
 <?php
 require_once('../config/database.php');
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM usuarios WHERE email = '$email' AND password = '$password'";
-    $result = $mysqli->query($sql);
+    $sql = "SELECT id FROM usuarios WHERE email = ? AND password = ?";
+    $stmt = $mysqli->prepare($sql);
 
-    if ($result->num_rows > 0) {
-        echo "<script>window.location.href = '/code/personal_info.php';</script>";
-        exit;
+    if (!$stmt) {
+        echo "Error en la preparación de la consulta: " . $mysqli->error;
+        exit();
+    }
+
+    $stmt->bind_param("ss", $email, $password);
+    $result = $stmt->execute();
+
+    if ($result) {
+        $stmt->bind_result($el_id_del_usuario);
+        $stmt->fetch();
+        $stmt->close();
+
+        $_SESSION['user_id'] = $el_id_del_usuario;
+        header("Location: /code/personal_info.php");
+        exit();
+    } else {
+        echo "Error al ejecutar la consulta: " . $stmt->error;
+        exit();
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">

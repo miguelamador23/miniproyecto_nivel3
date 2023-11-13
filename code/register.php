@@ -18,11 +18,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
+   
+    $name = $_POST['name'];
+
     $stmt->bind_param("sss", $email, $password, $name);
     $result = $stmt->execute();
 
     if ($result) {
-        header("Location: personal_info.php"); 
+        
+        $userId = $stmt->insert_id;
+
+     
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+       
+        $_SESSION['user_id'] = $userId;
+
+     
+        header("Location: personal_info.php");
         exit();
     } else {
         echo "Error en el registro: " . $stmt->error;
@@ -31,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 }
 ?>
-
 
 
 <!DOCTYPE html>
