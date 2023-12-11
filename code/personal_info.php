@@ -213,6 +213,10 @@ $stmt->close();
 
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">PHOTO</dt>
+                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                            <img id="profilePhoto" class="inline object-cover w-12 h-12 mr-2 rounded-full shadow-sm" src="../img/imagen1.jpg" alt="Profile Photo">
+                            <button class="text-sm text-blue-500 focus:outline-none" onclick="openFileExplorer()">Cambiar foto</button>
+                        </dd>
                     </div>
 
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 editable">
@@ -276,6 +280,23 @@ $stmt->close();
                 editButton.disabled = true;
             });
         });
+
+
+        function openFileExplorer() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const profilePhoto = document.getElementById('profilePhoto');
+                    profilePhoto.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        }
     </script>
     <button id="darkModeToggle" class="dark-mode-toggle">Dark Mode</button>
 </body>
@@ -283,10 +304,11 @@ $stmt->close();
 </html>
 
 <?php
+$newEmail = null;
+
 if ($newEmail === '') {
     $newEmail = null;
 }
-
 
 $sqlUpdate = "UPDATE usuarios SET name=?, bio=?, email=?, password=?, phone=? WHERE id=?";
 $stmtUpdate = $mysqli->prepare($sqlUpdate);
