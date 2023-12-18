@@ -21,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $newEmail = null;
     }
 
-    // Preparación de la consulta
     $sqlUpdate = "UPDATE usuarios SET Name=?, Bio=?, Email=?, Password=?, Phone=? WHERE id=?";
     $stmtUpdate = $mysqli->prepare($sqlUpdate);
 
@@ -32,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmtUpdate->bind_param("sssssi", $newName, $newBio, $newEmail, $newPassword, $newPhone, $userId);
 
-    // Ejecución de la consulta
     $resultUpdate = $stmtUpdate->execute();
 
     if ($resultUpdate) {
