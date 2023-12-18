@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 
-$sql = "SELECT name, bio, email, password FROM usuarios WHERE id = ?";
+$sql = "SELECT Name, Bio, Email, password FROM usuarios WHERE id = ?";
 $stmt = $mysqli->prepare($sql);
 
 if (!$stmt) {
@@ -28,8 +28,29 @@ if ($result) {
 }
 
 $stmt->close();
-?>
 
+if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+    $photoTmpPath = $_FILES['photo']['tmp_name'];
+    $photoPath = 'img/' . $_FILES['photo']['name'];
+    if (move_uploaded_file($photoTmpPath, $photoPath)) {
+        $sqlUpdatePhoto = "UPDATE usuarios SET foto = ? WHERE id = ?";
+        $stmtUpdatePhoto = $mysqli->prepare($sqlUpdatePhoto);
+        $stmtUpdatePhoto->bind_param("si", $photoPath, $userId);
+        $stmtUpdatePhoto->execute();
+        $stmtUpdatePhoto->close();
+
+        echo "Imagen guardada con éxito";
+    } else {
+        echo "Error al mover el archivo subido";
+    }
+} else {
+    echo "Error al subir el archivo";
+}
+
+$phone = null;
+$sqlUpdate = "UPDATE usuarios SET name=?, bio=?, email=?, password=?, phone=? WHERE id=?";
+$stmtUpdate = $mysqli->prepare($sqlUpdate);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -214,8 +235,8 @@ $stmt->close();
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">PHOTO</dt>
                         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                            <img id="profilePhoto" class="inline object-cover w-12 h-12 mr-2 rounded-full shadow-sm" src="../img/imagen1.jpg" alt="Profile Photo">
-                            <button class="text-sm text-blue-500 focus:outline-none" onclick="openFileExplorer()">Cambiar foto</button>
+                            <input type="file" name="photo" accept="image/*">
+                            <button class="text-sm text-blue-500 focus:outline-none" type="submit">Guardar cambios</button>
                         </dd>
                     </div>
 
@@ -229,7 +250,7 @@ $stmt->close();
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 editable">
                         <dt class="text-sm font-medium leading-6 text-gray-900">PHONE</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <input type="text" name="new_phone" value="<?php echo $phone; ?>" />
+                            <input type="text" name="new_phone" value="<?php echo $phone; ?>"/>
                         </dd>
                     </div>
 
@@ -323,7 +344,6 @@ $stmtUpdate->bind_param("sssssi", $newName, $newBio, $newEmail, $newPassword, $n
 $resultUpdate = $stmtUpdate->execute();
 
 if ($resultUpdate) {
-    header("Location: personal_info.php");
     exit();
 } else {
     echo "Error al actualizar la información: " . $stmtUpdate->error;

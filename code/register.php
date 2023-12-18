@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    $sql = "INSERT INTO usuarios (email, password, Name) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO usuarios (Email, Password) VALUES (?, ?)";
     $stmt = $mysqli->prepare($sql);
 
     if (!$stmt) {
@@ -18,25 +18,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-   
-    $name = $_POST['name'];
-
-    $stmt->bind_param("sss", $email, $password, $name);
+    $stmt->bind_param("ss", $email, $password);
     $result = $stmt->execute();
 
     if ($result) {
-        
         $userId = $stmt->insert_id;
 
-     
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
 
-       
         $_SESSION['user_id'] = $userId;
 
-     
         header("Location: personal_info.php");
         exit();
     } else {

@@ -16,13 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newPassword = isset($_POST['edit_mode']) ? $_POST['new_password'] : $_POST['current_password'];
     $newPhone = $_POST['new_phone'];
 
-    // Asegúrate de que $newEmail tenga un valor antes de la preparación de la consulta
+
     if ($newEmail === '') {
         $newEmail = null;
     }
 
     // Preparación de la consulta
-    $sqlUpdate = "UPDATE usuarios SET name=?, bio=?, email=?, password=?, phone=? WHERE id=?";
+    $sqlUpdate = "UPDATE usuarios SET Name=?, Bio=?, Email=?, Password=?, Phone=? WHERE id=?";
     $stmtUpdate = $mysqli->prepare($sqlUpdate);
 
     if (!$stmtUpdate) {
