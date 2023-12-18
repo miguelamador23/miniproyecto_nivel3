@@ -235,7 +235,7 @@ $stmtUpdate = $mysqli->prepare($sqlUpdate);
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">PHOTO</dt>
                         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                            <input type="file" name="photo" accept="image/*">
+                            <img src="./img/imagen1.jpg" alt="Foto actual">
                             <button class="text-sm text-blue-500 focus:outline-none" type="submit">Guardar cambios</button>
                         </dd>
                     </div>
@@ -250,7 +250,7 @@ $stmtUpdate = $mysqli->prepare($sqlUpdate);
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 editable">
                         <dt class="text-sm font-medium leading-6 text-gray-900">PHONE</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <input type="text" name="new_phone" value="<?php echo $phone; ?>"/>
+                            <input type="text" name="new_phone" value="<?php echo $phone; ?>" />
                         </dd>
                     </div>
 
@@ -318,6 +318,20 @@ $stmtUpdate = $mysqli->prepare($sqlUpdate);
             };
             input.click();
         }
+        const button = document.getElementById('button');
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        button.addEventListener('click', () => input.click());
+        input.addEventListener('change', () => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const image = document.getElementById('image');
+                image.src = event.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+
+        });
     </script>
     <button id="darkModeToggle" class="dark-mode-toggle">Dark Mode</button>
 </body>
